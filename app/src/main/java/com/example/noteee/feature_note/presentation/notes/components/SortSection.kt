@@ -44,10 +44,7 @@ fun SortSection(
     ) {
         Row (
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 20.dp
-                ),
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -85,9 +82,6 @@ fun SortSection(
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
-                .padding(
-                    horizontal = 20.dp
-                )
                 .alpha(.6f)
                 .background(Color.LightGray)
         )

@@ -173,6 +173,7 @@ fun NoteItem(
                         ),
                     imageVector = Icons.Rounded.AccessTime,
                     contentDescription = null,
+                    tint = Color.Black
                 )
 
                 Spacer(modifier = Modifier.width(5.dp))
@@ -183,7 +184,8 @@ fun NoteItem(
                             end = 5.dp
                         ),
                     text = formattedDateTime,
-                    fontSize = 10.sp
+                    fontSize = 10.sp,
+                    color = Color.Black
                 )
             }
         }

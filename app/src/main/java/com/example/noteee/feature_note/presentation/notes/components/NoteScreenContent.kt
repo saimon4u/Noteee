@@ -48,73 +48,71 @@ fun NoteScreenContent(
 
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(Color.White),
     ){
-        Column (
+        LazyColumn(
             modifier = Modifier
-                .background(Color.White)
-                .verticalScroll(rememberScrollState())
-        ){
-            SortSection(
-                noteState = noteStates,
-                modifier = Modifier
-                    .height(50.dp)
-                    .fillMaxWidth()
-            )
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 20.dp
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            item {
+                SortSection(
+                    noteState = noteStates,
+                    modifier = Modifier
+                        .height(50.dp)
+                        .fillMaxWidth()
+                )
 
-            Spacer(modifier = Modifier.height(20.dp))
-
-            LazyRow (
-                modifier = Modifier
-                    .padding(
-                        horizontal = 20.dp,
-                        vertical = 5.dp
-                    )
-            ){
-                items(categoryList.size){index ->
-
-
-                    Box(
-                        modifier = Modifier
-                            .wrapContentSize()
-                            .padding(8.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(Color.LightGray)
-                            .padding(
-                                horizontal = 10.dp
-                            )
-                    ){
-                        Text(
-                            text = categoryList[index],
-                            fontSize = 12.sp,
-                            color = Color.DarkGray
-                        )
-                    }
-
-                }
+                Spacer(modifier = Modifier.height(20.dp))
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
 
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(1000.dp)
-                    .padding(
-                        horizontal = 30.dp
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                items(noteStates.noteList.size){index ->
-                    NoteItem(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(200.dp),
-                        note = noteStates.noteList[index]
-                    )
-                    Spacer(modifier = Modifier.height(25.dp))
+            item {
+                LazyRow (
+                    modifier = Modifier
+                        .padding(
+                            vertical = 5.dp
+                        )
+                ){
+                    items(categoryList.size){index ->
+
+
+                        Box(
+                            modifier = Modifier
+                                .wrapContentSize()
+                                .padding(8.dp)
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(Color.LightGray)
+                                .padding(
+                                    horizontal = 10.dp
+                                )
+                        ){
+                            Text(
+                                text = categoryList[index],
+                                fontSize = 12.sp,
+                                color = Color.DarkGray
+                            )
+                        }
+
+                    }
                 }
+
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+
+            items(noteStates.noteList.size){index ->
+                NoteItem(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    note = noteStates.noteList[index]
+                )
+                Spacer(modifier = Modifier.height(25.dp))
             }
         }
 
