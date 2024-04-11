@@ -45,6 +45,7 @@ fun NoteScreenContent(
     val categoryList = listOf("All", "Idea", "Todo", "Academic", "Expense", "Personal")
 
 
+
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -105,13 +106,14 @@ fun NoteScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                items(categoryList.size){index ->
+                items(noteStates.noteList.size){index ->
                     NoteItem(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(200.dp)
+                            .height(200.dp),
+                        note = noteStates.noteList[index]
                     )
-                    Spacer(modifier = Modifier.height(15.dp))
+                    Spacer(modifier = Modifier.height(25.dp))
                 }
             }
         }

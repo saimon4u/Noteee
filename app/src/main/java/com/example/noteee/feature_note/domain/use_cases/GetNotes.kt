@@ -1,5 +1,6 @@
 package com.example.noteee.feature_note.domain.use_cases
 
+import android.util.Log
 import com.example.noteee.feature_note.domain.model.Note
 import com.example.noteee.feature_note.domain.repository.NoteRepository
 import com.example.noteee.feature_note.domain.util.NoteOrder

@@ -1,5 +1,6 @@
 package com.example.noteee.feature_note.presentation.notes
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noteee.feature_note.domain.use_cases.NoteUseCases
@@ -8,6 +9,7 @@ import com.example.noteee.feature_note.domain.util.OrderType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,7 +29,7 @@ class NoteViewModel @Inject constructor(
 
     private fun getNotes(noteOrder: NoteOrder) {
         viewModelScope.launch {
-            noteUseCases.getNotes.invoke(noteOrder).onEach {notes->
+            noteUseCases.getNotes.invoke(noteOrder).collectLatest {notes->
                 _noteStates.update {
                     it.copy(
                         noteList = notes,
@@ -36,6 +38,7 @@ class NoteViewModel @Inject constructor(
                 }
             }
         }
+        Log.e("TAG", "getNotes: " + _noteStates.value.noteList.size.toString() )
     }
 
 
