@@ -47,6 +47,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,6 +68,7 @@ import androidx.navigation.NavHostController
 import com.example.noteee.feature_note.domain.model.Note
 import com.example.noteee.feature_note.presentation.edit_note.components.BottomSheetShape
 import com.example.noteee.feature_note.presentation.edit_note.components.TransparentTextField
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,6 +77,8 @@ fun EditNoteScreen(
     navHostController: NavHostController,
     noteColor: Int,
 ) {
+    
+    
 
     val viewModel = hiltViewModel<EditNoteViewModel>()
     val titleState = viewModel.noteTitle.value
@@ -93,6 +97,7 @@ fun EditNoteScreen(
     
     val sheetState = rememberModalBottomSheetState()
 
+    SetBarColor(color = Color(viewModel.noteColor.value))
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -516,9 +521,13 @@ fun EditNoteScreen(
         }
     }
 
-    
-    
-    
-    
-    
+}
+
+
+@Composable
+private fun SetBarColor(color: Color){
+    val systemUiController = rememberSystemUiController()
+    LaunchedEffect(key1 = color){
+        systemUiController.setSystemBarsColor(color)
+    }
 }
