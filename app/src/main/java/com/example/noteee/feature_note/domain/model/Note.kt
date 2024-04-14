@@ -15,10 +15,10 @@ import com.example.noteee.ui.theme.Sunglow
 @Entity
 data class Note(
     @PrimaryKey
-    val id: Int,
+    val id: Int?,
     val title: String,
     val content: String,
-    val category: String,
+    val category: String? = null,
     val timestamp: Long,
     val color: Int,
 ){

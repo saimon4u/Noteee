@@ -90,8 +90,6 @@ class FakeRepositoryImpl: NoteRepository {
             timestamp = System.currentTimeMillis(),
             color = Note.noteColors.random().toArgb(),
         ),
-
-
     )
     override suspend fun upsertNote(note: Note) {
         notes.add(note)
@@ -99,6 +97,7 @@ class FakeRepositoryImpl: NoteRepository {
 
     override suspend fun deleteNote(note: Note) {
         notes.remove(note)
+        Log.e("TAG", "deleteNote: " + note.title + notes.size)
     }
 
     override suspend fun getNotes(): Flow<List<Note>> {

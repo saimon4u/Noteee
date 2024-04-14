@@ -22,6 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,10 +33,9 @@ import com.example.noteee.feature_note.presentation.util.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteScreen() {
-
-    val navController = rememberNavController()
-
+fun NoteScreen(
+    navHostController: NavHostController
+) {
     Scaffold(
         containerColor = Color.Transparent,
         topBar = {
@@ -60,14 +60,7 @@ fun NoteScreen() {
         Box(
             modifier = Modifier.padding(it)
         ) {
-            NavHost(
-                navController = navController,
-                startDestination = Screen.NoteScreen.route
-            ){
-                composable(Screen.NoteScreen.route){
-                    NoteScreenContent(navController)
-                }
-            }
+            NoteScreenContent(navHostController)
         }
     }
 }

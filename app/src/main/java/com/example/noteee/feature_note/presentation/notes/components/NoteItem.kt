@@ -3,6 +3,7 @@ package com.example.noteee.feature_note.presentation.notes.components
 import android.widget.Space
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.rounded.AccessTime
+import androidx.compose.material.icons.rounded.ArrowOutward
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -45,7 +47,10 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.noteee.feature_note.domain.model.Note
+import com.example.noteee.feature_note.presentation.notes.NoteEvents
+import com.example.noteee.feature_note.presentation.util.Screen
 import com.example.noteee.ui.theme.Maximum_Green_Yellow
 import com.example.noteee.ui.theme.Persian_Pink
 import java.sql.Date
@@ -57,7 +62,9 @@ import java.util.Locale
 fun NoteItem(
     modifier: Modifier,
     cutCornerSize: Dp = 50.dp,
-    note: Note
+    note: Note,
+    onEvent: (NoteEvents) -> Unit,
+    navHostController: NavHostController
 ) {
 
     val date = Date(note.timestamp)
@@ -118,7 +125,7 @@ fun NoteItem(
         ){
 
             Text(
-                text = note.category,
+                text = note.category ?: "",
                 color = Color.Black,
                 fontSize = 12.sp,
                 maxLines = 1,
@@ -199,11 +206,14 @@ fun NoteItem(
                 modifier = Modifier
                     .size(cutCornerSize)
                     .clip(CircleShape)
+                    .clickable {
+                        navHostController.navigate(Screen.EditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}" )
+                    }
                     .background(Color(note.color)),
                 contentAlignment = Alignment.Center
             ){
                 Icon(
-                    imageVector = Icons.Filled.Edit,
+                    imageVector = Icons.Rounded.ArrowOutward,
                     contentDescription = "Edit Note",
                     tint = Color.Black
                 )
@@ -228,7 +238,7 @@ fun NoteItem(
             ){
                 Icon(
                     imageVector = Icons.Outlined.Favorite,
-                    contentDescription = "Edit Note",
+                    contentDescription = "Add to favourite",
                     tint = Color.Black
                 )
             }
@@ -247,30 +257,18 @@ fun NoteItem(
                     .size(30.dp)
                     .clip(CircleShape)
                     .background(Color.White.copy(.9f))
+                    .clickable {
+                        onEvent(NoteEvents.Delete(note))
+                    }
                     .padding(7.dp),
                 contentAlignment = Alignment.Center
             ){
                 Icon(
                     imageVector = Icons.Outlined.Delete,
-                    contentDescription = "Edit Note",
+                    contentDescription = "Delete Note",
                     tint = Color.Black
                 )
             }
         }
     }
-}
-
-@Preview
-@Composable
-private fun Prev() {
-    NoteItem(
-        modifier = Modifier.size(200.dp),
-        note = Note(
-        id = 12,
-        title = "This is my first note",
-        content = "Lorem ipsum dolor de amor lorem ipsum dolor de amor Lorem ipsum dolor de amor lorem ipsum dolor de amor Lorem ipsum dolor de amor lorem ipsum dolor de amor Lorem ipsum dolor de amor lorem ipsum dolor de amor Lorem ipsum dolor de amor lorem ipsum dolor de amor Lorem ipsum dolor de amor lorem ipsum dolor de amor",
-        category = "fav",
-        timestamp = System.currentTimeMillis(),
-        color = 1
-    ))
 }

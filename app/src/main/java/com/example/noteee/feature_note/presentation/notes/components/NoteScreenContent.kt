@@ -65,7 +65,8 @@ fun NoteScreenContent(
                     noteState = noteStates,
                     modifier = Modifier
                         .height(50.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                    onEvent = noteViewModel::onEvent
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -110,7 +111,9 @@ fun NoteScreenContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp),
-                    note = noteStates.noteList[index]
+                    note = noteStates.noteList[index],
+                    onEvent = noteViewModel::onEvent,
+                    navHostController = navHostController
                 )
                 Spacer(modifier = Modifier.height(25.dp))
             }
@@ -120,7 +123,10 @@ fun NoteScreenContent(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
         ){
-            BottomNavBar(modifier = Modifier.fillMaxWidth())
+            BottomNavBar(
+                modifier = Modifier.fillMaxWidth(),
+                navHostController = navHostController
+            )
         }
     }
 }

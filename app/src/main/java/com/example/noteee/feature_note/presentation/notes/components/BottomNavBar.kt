@@ -27,11 +27,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.example.noteee.feature_note.presentation.util.Screen
 
 
 @Composable
 fun BottomNavBar(
-    modifier: Modifier
+    modifier: Modifier,
+    navHostController: NavHostController
 ) {
     val color = Color.Black
     Box (
@@ -96,7 +99,9 @@ fun BottomNavBar(
                     )
             ){
                 FloatingActionButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        navHostController.navigate(Screen.EditNoteScreen.route)
+                    },
                     modifier = Modifier
                         .size(32.dp)
                         .clip(CircleShape),

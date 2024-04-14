@@ -35,7 +35,7 @@ object AppModule {
     @Provides
     @Singleton
     fun providesRepository(noteDatabase: NoteDatabase): NoteRepository{
-        return FakeRepositoryImpl()
+        return NoteRepositoryImpl(noteDatabase.noteDao)
     }
 
     @Provides
