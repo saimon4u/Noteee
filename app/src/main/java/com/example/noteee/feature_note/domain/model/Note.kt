@@ -25,6 +25,20 @@ data class Note(
     companion object{
         val noteColors = listOf(Pastel_Green, Maximum_Green_Yellow, Persian_Pink, Green_Sheen, Celeste, Apricot, Pigment_Green, Poppy, Sunglow)
     }
+
+    fun doesMatchSearchQuery(text: String): Boolean{
+        val combinations = listOf(
+            "$title$category",
+            "$title $category",
+            "${title.first()} ${category?.first()}",
+            "${category?.first()}",
+            "${title.first()}"
+        )
+
+        return combinations.any{
+            it.contains(text, ignoreCase = true)
+        }
+    }
 }
 
 class InvalidNoteException(message: String): Exception(message)

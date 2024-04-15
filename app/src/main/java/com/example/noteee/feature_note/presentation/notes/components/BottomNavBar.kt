@@ -3,6 +3,7 @@ package com.example.noteee.feature_note.presentation.notes.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -83,6 +84,9 @@ fun BottomNavBar(
                     .clip(CircleShape)
                     .background(Option_Color)
                     .padding(3.dp)
+                    .clickable {
+                        navHostController.navigate(Screen.SearchNoteScreen.route)
+                    }
                     .size(25.dp),
                 contentAlignment = Alignment.Center
             ){

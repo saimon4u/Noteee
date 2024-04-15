@@ -17,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.noteee.feature_note.presentation.edit_note.EditNoteScreen
 import com.example.noteee.feature_note.presentation.notes.NoteScreen
+import com.example.noteee.feature_note.presentation.search_note.SearchScreen
 import com.example.noteee.feature_note.presentation.util.Screen
 import com.example.noteee.ui.theme.NoteeeTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -66,6 +67,12 @@ class MainActivity : ComponentActivity() {
                                 navHostController = bottomNavController,
                                 noteColor = color
                             )
+                        }
+
+                        composable(
+                            route = Screen.SearchNoteScreen.route
+                        ){
+                            SearchScreen(bottomNavController)
                         }
                     }
                 }

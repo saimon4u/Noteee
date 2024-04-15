@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.noteee.feature_note.domain.model.Note
 import com.example.noteee.feature_note.presentation.notes.NoteEvents
+import com.example.noteee.feature_note.presentation.notes.NoteViewModel
 import com.example.noteee.feature_note.presentation.util.Screen
 import com.example.noteee.ui.theme.Maximum_Green_Yellow
 import com.example.noteee.ui.theme.Persian_Pink
@@ -63,7 +64,7 @@ fun NoteItem(
     modifier: Modifier,
     cutCornerSize: Dp = 50.dp,
     note: Note,
-    onEvent: (NoteEvents) -> Unit,
+    onEvent: ((NoteEvents) -> Unit)? = null,
     navHostController: NavHostController
 ) {
 
@@ -258,7 +259,9 @@ fun NoteItem(
                     .clip(CircleShape)
                     .background(Color.White.copy(.9f))
                     .clickable {
-                        onEvent(NoteEvents.Delete(note))
+                        if (onEvent != null) {
+                            onEvent(NoteEvents.Delete(note))
+                        }
                     }
                     .padding(7.dp),
                 contentAlignment = Alignment.Center
