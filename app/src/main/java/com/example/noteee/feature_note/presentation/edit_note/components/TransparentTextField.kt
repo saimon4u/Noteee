@@ -49,23 +49,14 @@ fun TransparentTextField(
                 .onFocusChanged {
                     onFocusChange(it)
                 },
-            cursorBrush = SolidColor(Color.Black),
-            keyboardActions = KeyboardActions.Default,
-            keyboardOptions = KeyboardOptions.Default
-        ){
-            if(isHintVisible){
-                Text(
-                    text = hint,
-                    style = textStyle,
-                    color = Color.DarkGray
-                )
-            }else{
-                Text(
-                    text = text,
-                    style = textStyle,
-                    color = Color.Black
-                )
-            }
+        )
+
+        if(isHintVisible){
+            Text(
+                text = hint,
+                style = textStyle,
+                color = Color.DarkGray
+            )
         }
     }
 

@@ -32,6 +32,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.noteee.feature_note.presentation.notes.NoteViewModel
+import com.example.noteee.ui.theme.Option_Color
+import com.example.noteee.ui.theme.Option_Color_Light
 import com.example.noteee.ui.theme.Pink40
 
 @Composable
@@ -88,7 +90,7 @@ fun NoteScreenContent(
                                 .wrapContentSize()
                                 .padding(8.dp)
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(Color.LightGray)
+                                .background(Option_Color_Light)
                                 .padding(
                                     horizontal = 10.dp
                                 )
@@ -96,7 +98,7 @@ fun NoteScreenContent(
                             Text(
                                 text = categoryList[index],
                                 fontSize = 12.sp,
-                                color = Color.DarkGray
+                                color = Color.Black
                             )
                         }
 

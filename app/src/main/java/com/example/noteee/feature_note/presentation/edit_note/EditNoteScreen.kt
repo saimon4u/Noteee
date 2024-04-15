@@ -1,5 +1,7 @@
 package com.example.noteee.feature_note.presentation.edit_note
 
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.background
@@ -60,6 +62,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.colorspace.WhitePoint
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,6 +71,8 @@ import androidx.navigation.NavHostController
 import com.example.noteee.feature_note.domain.model.Note
 import com.example.noteee.feature_note.presentation.edit_note.components.BottomSheetShape
 import com.example.noteee.feature_note.presentation.edit_note.components.TransparentTextField
+import com.example.noteee.ui.theme.Dark_Bg
+import com.example.noteee.ui.theme.Option_Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
@@ -96,6 +101,7 @@ fun EditNoteScreen(
     }
     
     val sheetState = rememberModalBottomSheetState()
+    val context = LocalContext.current
 
     SetBarColor(color = Color(viewModel.noteColor.value))
     Column(
@@ -123,6 +129,7 @@ fun EditNoteScreen(
                         color = Color.Black
                     )
                     .clickable {
+                        viewModel.onEvent(EditNoteEvents.SaveNote)
                         navHostController.navigateUp()
                     }
                     .padding(8.dp),
@@ -234,7 +241,7 @@ fun EditNoteScreen(
             },
             sheetState = sheetState,
             shape = BottomSheetShape(),
-            containerColor = Color.Black,
+            containerColor = Dark_Bg,
         ) {
 
             Box(
@@ -318,7 +325,7 @@ fun EditNoteScreen(
                                 horizontal = 5.dp,
                             )
                             .clip(RoundedCornerShape(10.dp))
-                            .background(Color.LightGray.copy(.7f)),
+                            .background(Option_Color),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -369,7 +376,7 @@ fun EditNoteScreen(
                                 horizontal = 5.dp,
                             )
                             .clip(RoundedCornerShape(10.dp))
-                            .background(Color.LightGray.copy(.7f)),
+                            .background(Option_Color),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -420,7 +427,7 @@ fun EditNoteScreen(
                                 horizontal = 5.dp,
                             )
                             .clip(RoundedCornerShape(10.dp))
-                            .background(Color.LightGray.copy(.7f)),
+                            .background(Option_Color),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -478,6 +485,10 @@ fun EditNoteScreen(
                             .height(50.dp)
                             .width(150.dp)
                             .clip(RoundedCornerShape(15.dp))
+                            .clickable {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/saimon4u/Noteee"))
+                                context.startActivity(intent)
+                            }
                             .background(Color.Green),
                         contentAlignment = Alignment.Center
                     ) {
@@ -487,8 +498,8 @@ fun EditNoteScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Icon(imageVector = Icons.Outlined.Info, contentDescription = null, tint = Color.White)
-                            Text(text = "Credits", color = Color.White)
+                            Icon(imageVector = Icons.Outlined.Info, contentDescription = null, tint = Color.Black)
+                            Text(text = "Credits", color = Color.Black)
                         }
                     }
 
@@ -508,8 +519,8 @@ fun EditNoteScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Icon(imageVector = Icons.Outlined.Delete, contentDescription = null, tint = Color.White)
-                            Text(text = "Delete", color = Color.White)
+                            Icon(imageVector = Icons.Outlined.Delete, contentDescription = null, tint = Color.Black)
+                            Text(text = "Delete", color = Color.Black)
                         }
                     }
 

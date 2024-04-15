@@ -48,7 +48,7 @@ class EditNoteViewModel @Inject constructor(
                             isHintVisible = false
                         )
 
-                        _noteContent.value = noteContent.value.copy(
+                        _noteContent.value = _noteContent.value.copy(
                             text = note.content,
                             isHintVisible = false
                         )
@@ -67,8 +67,8 @@ class EditNoteViewModel @Inject constructor(
                 _noteColor.value = event.color
             }
             is EditNoteEvents.ChangeContentFocus -> {
-                _noteContent.value = noteContent.value.copy(
-                    isHintVisible = !event.focusState.isFocused && noteContent.value.text.isBlank()
+                _noteContent.value = _noteContent.value.copy(
+                    isHintVisible = !event.focusState.isFocused && _noteContent.value.text.isBlank()
                 )
             }
             is EditNoteEvents.ChangeTitleFocus -> {
@@ -77,7 +77,7 @@ class EditNoteViewModel @Inject constructor(
                 )
             }
             is EditNoteEvents.EnteredContent -> {
-                _noteContent.value = noteContent.value.copy(
+                _noteContent.value = _noteContent.value.copy(
                     text = event.value
                 )
             }
@@ -99,8 +99,8 @@ class EditNoteViewModel @Inject constructor(
                             )
                         )
 
-                    }catch (e: InvalidNoteException){
-//                        Toast.makeText(, "Can't save note...", Toast.LENGTH_SHORT).show()
+                    }catch (_: InvalidNoteException){
+
                     }
                 }
             }

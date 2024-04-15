@@ -29,6 +29,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.noteee.feature_note.presentation.util.Screen
+import com.example.noteee.ui.theme.Dark_Bg
+import com.example.noteee.ui.theme.Option_Color
 
 
 @Composable
@@ -36,7 +38,7 @@ fun BottomNavBar(
     modifier: Modifier,
     navHostController: NavHostController
 ) {
-    val color = Color.Black
+    val color = Dark_Bg
     Box (
         modifier = modifier
             .fillMaxWidth()
@@ -79,7 +81,7 @@ fun BottomNavBar(
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .background(Color.Gray)
+                    .background(Option_Color)
                     .padding(3.dp)
                     .size(25.dp),
                 contentAlignment = Alignment.Center
@@ -87,7 +89,7 @@ fun BottomNavBar(
                 Icon(
                     imageVector = Icons.Rounded.Search,
                     contentDescription = null,
-                    tint = Color.Black,
+                    tint = Color.White,
                 )
             }
 
@@ -117,7 +119,7 @@ fun BottomNavBar(
             Box(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .background(Color.Gray)
+                    .background(Option_Color)
                     .padding(3.dp)
                     .size(25.dp),
                 contentAlignment = Alignment.Center
@@ -125,7 +127,7 @@ fun BottomNavBar(
                 Icon(
                     imageVector = Icons.Rounded.Settings,
                     contentDescription = null,
-                    tint = Color.Black,
+                    tint = Color.White,
                 )
             }
         }
