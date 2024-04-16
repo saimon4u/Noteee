@@ -31,7 +31,7 @@ import com.example.noteee.feature_note.presentation.util.Screen
 
 @Composable
 fun PasswordDialogBox(
-    onEvent: (NoteEvents) -> Unit,
+    onEvent: ((NoteEvents) -> Unit)? = null,
     onDismiss: () -> Unit,
     isFromDelete: Boolean = false,
     note: Note? = null,
@@ -85,7 +85,9 @@ fun PasswordDialogBox(
                         onClick = {
                             if(password == note?.password){
                                 if(isFromDelete){
-                                    onEvent(NoteEvents.Delete(note))
+                                    if (onEvent != null) {
+                                        onEvent(NoteEvents.Delete(note))
+                                    }
                                 }else{
                                     navHostController.navigate(Screen.EditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
                                 }

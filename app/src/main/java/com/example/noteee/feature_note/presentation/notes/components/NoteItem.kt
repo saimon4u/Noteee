@@ -97,7 +97,7 @@ fun NoteItem(
             contentAlignment = Alignment.Center
         ){
             PasswordDialogBox(
-                onEvent = onEvent!!,
+                onEvent = onEvent,
                 onDismiss = {
                     showDialog = false
                 },

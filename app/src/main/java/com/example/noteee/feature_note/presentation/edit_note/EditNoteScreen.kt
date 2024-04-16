@@ -104,7 +104,7 @@ fun EditNoteScreen(
     val sheetState = rememberModalBottomSheetState()
     val context = LocalContext.current
 
-    SetBarColor(color = Color(viewModel.noteColor.value))
+    SetBarColor(color = Color(viewModel.noteColor.intValue))
     Column(
         modifier = Modifier
             .fillMaxSize()
