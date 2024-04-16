@@ -2,7 +2,6 @@ package com.example.noteee.feature_note.presentation.edit_note
 
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,30 +17,23 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.ArrowBackIos
-import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Save
 import androidx.compose.material.icons.rounded.AlarmAdd
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
-import androidx.compose.material.icons.rounded.ArrowForwardIos
-import androidx.compose.material.icons.rounded.Cancel
 import androidx.compose.material.icons.rounded.Category
-import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Password
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -60,19 +52,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.colorspace.WhitePoint
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.noteee.feature_note.domain.model.Note
 import com.example.noteee.feature_note.presentation.edit_note.components.BottomSheetShape
+import com.example.noteee.feature_note.presentation.edit_note.components.EditNoteOption
 import com.example.noteee.feature_note.presentation.edit_note.components.TransparentTextField
 import com.example.noteee.ui.theme.Dark_Bg
-import com.example.noteee.ui.theme.Option_Color
+import com.example.noteee.ui.theme.Option_Color_Light
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.launch
 
@@ -97,6 +88,9 @@ fun EditNoteScreen(
 
     val scope = rememberCoroutineScope()
     var isSheetOpen by rememberSaveable {
+        mutableStateOf(false)
+    }
+    var isCategoryOpen by remember {
         mutableStateOf(false)
     }
     
@@ -288,7 +282,7 @@ fun EditNoteScreen(
                                 .clip(RoundedCornerShape(15.dp))
                                 .background(Note.noteColors[index])
                                 .clickable {
-                                    viewModel.onEvent(EditNoteEvents.ChageColor(Note.noteColors[index].toArgb()))
+                                    viewModel.onEvent(EditNoteEvents.ChangeColor(Note.noteColors[index].toArgb()))
                                     scope.launch {
                                         animateBg.animateTo(Note.noteColors[index])
                                     }
@@ -317,156 +311,212 @@ fun EditNoteScreen(
                         )
                 ){
 
-                    Row(
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(50.dp)
+//                            .padding(
+//                                horizontal = 5.dp,
+//                            )
+//                            .clip(RoundedCornerShape(10.dp))
+//                            .background(Option_Color),
+//                        horizontalArrangement = Arrangement.SpaceBetween,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Row(
+//                            modifier = Modifier
+//                                .padding(
+//                                    start = 10.dp
+//                                )
+//                        ) {
+//                            Icon(imageVector = Icons.Rounded.Category, contentDescription = "Note Category", tint = Color.White)
+//                            Spacer(modifier = Modifier.width(5.dp))
+//                            Text(
+//                                text = "Note Category",
+//                                color = Color.White,
+//                                fontSize = 17.sp,
+//                                fontWeight = FontWeight.SemiBold
+//                            )
+//                        }
+//
+//                        Row(
+//                            modifier = Modifier
+//                                .padding(
+//                                    end = 10.dp
+//                                )
+//                        ) {
+//
+//                            Text(
+//                                text = "General",
+//                                color = Color.LightGray,
+//                                fontSize = 10.sp,
+//                                fontWeight = FontWeight.SemiBold
+//                            )
+//
+//                            Spacer(modifier = Modifier.width(5.dp))
+//                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
+//                                .size(20.dp)
+//                                .padding(top = 5.dp))
+//                        }
+//                    }
+
+                    EditNoteOption(
+                        icon = Icons.Rounded.Category,
+                        title = "Note Category",
+                        value = viewModel.selectedCategory.value,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .padding(
-                                horizontal = 5.dp,
-                            )
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(Option_Color),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Row(
+                            .clickable {
+                                isCategoryOpen = !isCategoryOpen
+                            }
+                    )
+
+                    if(isCategoryOpen){
+                        Spacer(modifier = Modifier.height(5.dp))
+                        LazyRow (
                             modifier = Modifier
                                 .padding(
-                                    start = 10.dp
+                                    vertical = 5.dp
                                 )
-                        ) {
-                            Icon(imageVector = Icons.Rounded.Category, contentDescription = "Note Category", tint = Color.White)
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = "Note Category",
-                                color = Color.White,
-                                fontSize = 17.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
+                        ){
+                            items(viewModel.noteCategories.value){category->
+                                Box(
+                                    modifier = Modifier
+                                        .wrapContentSize()
+                                        .padding(8.dp)
+                                        .clip(RoundedCornerShape(10.dp))
+                                        .background(Option_Color_Light)
+                                        .clickable {
+                                            viewModel.onEvent(EditNoteEvents.SelectCategory(category))
+                                            isCategoryOpen = false
+                                        }
+                                        .padding(
+                                            horizontal = 10.dp
+                                        )
+                                ){
+                                    Text(
+                                        text = category,
+                                        fontSize = 12.sp,
+                                        color = Color.Black
+                                    )
+                                }
+                            }
                         }
-
-                        Row(
-                            modifier = Modifier
-                                .padding(
-                                    end = 10.dp
-                                )
-                        ) {
-
-                            Text(
-                                text = "General",
-                                color = Color.LightGray,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
-                                .size(20.dp)
-                                .padding(top = 5.dp))
-                        }
+                        Spacer(modifier = Modifier.height(5.dp))
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .padding(
-                                horizontal = 5.dp,
-                            )
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(Option_Color),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(
-                                    start = 10.dp
-                                )
-                        ) {
-                            Icon(imageVector = Icons.Rounded.Lock, contentDescription = "Note Password", tint = Color.White)
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = "Set Password",
-                                color = Color.White,
-                                fontSize = 17.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
-
-                        Row(
-                            modifier = Modifier
-                                .padding(
-                                    end = 10.dp
-                                )
-                        ) {
-
-                            Text(
-                                text = "Not Set",
-                                color = Color.LightGray,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
-                                .size(20.dp)
-                                .padding(top = 5.dp))
-                        }
-                    }
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(50.dp)
+//                            .padding(
+//                                horizontal = 5.dp,
+//                            )
+//                            .clip(RoundedCornerShape(10.dp))
+//                            .background(Option_Color),
+//                        horizontalArrangement = Arrangement.SpaceBetween,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Row(
+//                            modifier = Modifier
+//                                .padding(
+//                                    start = 10.dp
+//                                )
+//                        ) {
+//                            Icon(imageVector = Icons.Rounded.Lock, contentDescription = "Note Password", tint = Color.White)
+//                            Spacer(modifier = Modifier.width(5.dp))
+//                            Text(
+//                                text = "Set Password",
+//                                color = Color.White,
+//                                fontSize = 17.sp,
+//                                fontWeight = FontWeight.SemiBold
+//                            )
+//                        }
+//
+//                        Row(
+//                            modifier = Modifier
+//                                .padding(
+//                                    end = 10.dp
+//                                )
+//                        ) {
+//
+//                            Text(
+//                                text = "Not Set",
+//                                color = Color.LightGray,
+//                                fontSize = 10.sp,
+//                                fontWeight = FontWeight.SemiBold
+//                            )
+//
+//                            Spacer(modifier = Modifier.width(5.dp))
+//                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
+//                                .size(20.dp)
+//                                .padding(top = 5.dp))
+//                        }
+//                    }
+                    
+                    EditNoteOption(
+                        icon = Icons.Rounded.Password,
+                        title = "Set Password",
+                        value = "Not Set"
+                    )
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp)
-                            .padding(
-                                horizontal = 5.dp,
-                            )
-                            .clip(RoundedCornerShape(10.dp))
-                            .background(Option_Color),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(
-                                    start = 10.dp
-                                )
-                        ) {
-                            Icon(imageVector = Icons.Rounded.AlarmAdd, contentDescription = "Note Alarm", tint = Color.White)
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                text = "Set Reminder",
-                                color = Color.White,
-                                fontSize = 17.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-                        }
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(50.dp)
+//                            .padding(
+//                                horizontal = 5.dp,
+//                            )
+//                            .clip(RoundedCornerShape(10.dp))
+//                            .background(Option_Color),
+//                        horizontalArrangement = Arrangement.SpaceBetween,
+//                        verticalAlignment = Alignment.CenterVertically
+//                    ) {
+//                        Row(
+//                            modifier = Modifier
+//                                .padding(
+//                                    start = 10.dp
+//                                )
+//                        ) {
+//                            Icon(imageVector = Icons.Rounded.AlarmAdd, contentDescription = "Note Alarm", tint = Color.White)
+//                            Spacer(modifier = Modifier.width(5.dp))
+//                            Text(
+//                                text = "Set Reminder",
+//                                color = Color.White,
+//                                fontSize = 17.sp,
+//                                fontWeight = FontWeight.SemiBold
+//                            )
+//                        }
+//
+//                        Row(
+//                            modifier = Modifier
+//                                .padding(
+//                                    end = 10.dp
+//                                )
+//                        ) {
+//
+//                            Text(
+//                                text = "Not Set",
+//                                color = Color.LightGray,
+//                                fontSize = 10.sp,
+//                                fontWeight = FontWeight.SemiBold
+//                            )
+//
+//                            Spacer(modifier = Modifier.width(5.dp))
+//                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
+//                                .size(20.dp)
+//                                .padding(top = 5.dp))
+//                        }
+//                    }
 
-                        Row(
-                            modifier = Modifier
-                                .padding(
-                                    end = 10.dp
-                                )
-                        ) {
-
-                            Text(
-                                text = "Not Set",
-                                color = Color.LightGray,
-                                fontSize = 10.sp,
-                                fontWeight = FontWeight.SemiBold
-                            )
-
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
-                                .size(20.dp)
-                                .padding(top = 5.dp))
-                        }
-                    }
+                    EditNoteOption(
+                        icon = Icons.Rounded.AlarmAdd,
+                        title = "Set Reminder",
+                        value = "Not Set"
+                    )
 
                 }
 
@@ -486,7 +536,10 @@ fun EditNoteScreen(
                             .width(150.dp)
                             .clip(RoundedCornerShape(15.dp))
                             .clickable {
-                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/saimon4u/Noteee"))
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://github.com/saimon4u/Noteee")
+                                )
                                 context.startActivity(intent)
                             }
                             .background(Color.Green),

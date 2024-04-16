@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.map
 class GetNotes(
     private val noteRepository: NoteRepository
 ) {
-    suspend operator fun invoke(noteOrder: NoteOrder): Flow<List<Note>>{
-        return noteRepository.getNotes().map {notes->
+    suspend operator fun invoke(noteOrder: NoteOrder, category: String): Flow<List<Note>>{
+        return noteRepository.getNotes(category).map {notes->
             when(noteOrder.orderType){
                 OrderType.Ascending -> {
                     when(noteOrder){

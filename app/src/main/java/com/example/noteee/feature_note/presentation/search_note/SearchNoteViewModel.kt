@@ -28,7 +28,10 @@ class SearchNoteViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            noteUseCases.getNotes(NoteOrder.Title(OrderType.Ascending)).collectLatest {
+            noteUseCases.getNotes(
+                noteOrder = NoteOrder.Title(OrderType.Ascending),
+                category = "All"
+            ).collectLatest {
                 _notes.value = it
             }
         }

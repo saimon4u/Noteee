@@ -1,4 +1,4 @@
-package com.example.noteee.feature_note.data.remote
+package com.example.noteee.feature_note.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

@@ -1,4 +1,4 @@
-package com.example.noteee.feature_note.data.remote
+package com.example.noteee.feature_note.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -12,6 +12,9 @@ interface NoteDao {
 
     @Query("SELECT * FROM note")
     fun getNotes(): Flow<List<Note>>
+
+    @Query("SELECT * FROM note WHERE category = :category")
+    fun getNotesByCategory(category: String): Flow<List<Note>>
 
     @Query("SELECT * FROM note WHERE id = :id")
     suspend fun getNoteById(id: Int): Note?

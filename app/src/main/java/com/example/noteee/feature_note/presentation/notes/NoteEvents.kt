@@ -7,4 +7,6 @@ sealed class NoteEvents {
     data class Sort(val noteOrder: NoteOrder): NoteEvents()
     data class Delete(val note: Note): NoteEvents()
     data class AddToFavourite(val note: Note): NoteEvents()
+
+    data class Categorize(val category: String): NoteEvents()
 }

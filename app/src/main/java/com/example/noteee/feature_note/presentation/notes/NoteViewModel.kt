@@ -1,6 +1,7 @@
 package com.example.noteee.feature_note.presentation.notes
 
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.noteee.feature_note.domain.use_cases.NoteUseCases
@@ -24,12 +25,12 @@ class NoteViewModel @Inject constructor(
     val noteStates = _noteStates.asStateFlow()
 
     init {
-        getNotes(NoteOrder.Title(OrderType.Ascending))
+        getNotes(_noteStates.value.noteOrder, _noteStates.value.selectedCategory)
     }
 
-    private fun getNotes(noteOrder: NoteOrder) {
+    private fun getNotes(noteOrder: NoteOrder, category: String) {
         viewModelScope.launch {
-            noteUseCases.getNotes.invoke(noteOrder).collectLatest {notes->
+            noteUseCases.getNotes.invoke(noteOrder, category).collectLatest {notes->
                 _noteStates.update {
                     it.copy(
                         noteList = notes,
@@ -52,7 +53,19 @@ class NoteViewModel @Inject constructor(
             }
             is NoteEvents.Sort -> {
                 if(noteStates.value.noteOrder::class == event.noteOrder::class && noteStates.value.noteOrder.orderType == event.noteOrder.orderType) return
-                getNotes(event.noteOrder)
+                getNotes(event.noteOrder, _noteStates.value.selectedCategory)
+            }
+
+            is NoteEvents.Categorize -> {
+                _noteStates.update {
+                    it.copy(
+                        selectedCategory = event.category
+                    )
+                }
+                getNotes(
+                    noteOrder = _noteStates.value.noteOrder,
+                    category = event.category
+                )
             }
         }
     }

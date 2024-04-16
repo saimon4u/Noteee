@@ -1,9 +1,8 @@
 package com.example.noteee.feature_note.presentation.edit_note
 
-import android.widget.Toast
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +10,7 @@ import com.example.noteee.feature_note.domain.model.InvalidNoteException
 import com.example.noteee.feature_note.domain.model.Note
 import com.example.noteee.feature_note.domain.use_cases.NoteUseCases
 import com.example.noteee.feature_note.presentation.edit_note.components.TextFieldState
+import com.example.noteee.feature_note.presentation.util.Category
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,8 +31,16 @@ class EditNoteViewModel @Inject constructor(
     ))
     val noteContent = _noteContent
 
-    private val _noteColor = mutableStateOf(Note.noteColors.random().toArgb())
+    private val _noteColor = mutableIntStateOf(Note.noteColors.random().toArgb())
     val noteColor = _noteColor
+
+    private val _noteCategories = mutableStateOf(listOf(
+        Category.ACADEMIC, Category.TODO, Category.PERSONAL, Category.IDEA, Category.EXPENSE
+    ))
+    val noteCategories = _noteCategories
+
+    private val _selectedCategory = mutableStateOf("General")
+    val selectedCategory = _selectedCategory
 
     private var currentNoteId: Int? = null
 
@@ -53,7 +61,7 @@ class EditNoteViewModel @Inject constructor(
                             isHintVisible = false
                         )
 
-                        _noteColor.value = note.color
+                        _noteColor.intValue = note.color
                     }
                 }
             }
@@ -63,8 +71,8 @@ class EditNoteViewModel @Inject constructor(
 
     fun onEvent(event: EditNoteEvents){
         when(event){
-            is EditNoteEvents.ChageColor -> {
-                _noteColor.value = event.color
+            is EditNoteEvents.ChangeColor -> {
+                _noteColor.intValue = event.color
             }
             is EditNoteEvents.ChangeContentFocus -> {
                 _noteContent.value = _noteContent.value.copy(
@@ -94,8 +102,9 @@ class EditNoteViewModel @Inject constructor(
                                 title = noteTitle.value.text,
                                 content = noteContent.value.text,
                                 timestamp = System.currentTimeMillis(),
-                                color = noteColor.value,
+                                color = noteColor.intValue,
                                 id = currentNoteId,
+                                category = _selectedCategory.value
                             )
                         )
 
@@ -103,6 +112,10 @@ class EditNoteViewModel @Inject constructor(
 
                     }
                 }
+            }
+
+            is EditNoteEvents.SelectCategory -> {
+                _selectedCategory.value = event.category
             }
         }
     }

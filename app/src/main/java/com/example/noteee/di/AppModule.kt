@@ -1,10 +1,8 @@
 package com.example.noteee.di
 
 import android.app.Application
-import android.util.Log
 import androidx.room.Room
-import com.example.noteee.feature_note.data.remote.NoteDatabase
-import com.example.noteee.feature_note.data.repository.FakeRepositoryImpl
+import com.example.noteee.feature_note.data.local.NoteDatabase
 import com.example.noteee.feature_note.data.repository.NoteRepositoryImpl
 import com.example.noteee.feature_note.domain.repository.NoteRepository
 import com.example.noteee.feature_note.domain.use_cases.AddNote
