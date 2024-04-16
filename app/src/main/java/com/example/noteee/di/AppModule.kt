@@ -7,6 +7,7 @@ import com.example.noteee.feature_note.data.repository.NoteRepositoryImpl
 import com.example.noteee.feature_note.domain.repository.NoteRepository
 import com.example.noteee.feature_note.domain.use_cases.AddNote
 import com.example.noteee.feature_note.domain.use_cases.DeleteNote
+import com.example.noteee.feature_note.domain.use_cases.GetFavouriteNotes
 import com.example.noteee.feature_note.domain.use_cases.GetNote
 import com.example.noteee.feature_note.domain.use_cases.GetNotes
 import com.example.noteee.feature_note.domain.use_cases.NoteUseCases
@@ -45,7 +46,8 @@ object AppModule {
             addNote = AddNote(noteRepository),
             deleteNote = DeleteNote(noteRepository),
             getNote = GetNote(noteRepository),
-            getNotes = GetNotes(noteRepository)
+            getNotes = GetNotes(noteRepository),
+            getFavouriteNotes = GetFavouriteNotes(noteRepository)
         )
     }
 }

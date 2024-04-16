@@ -16,6 +16,9 @@ interface NoteDao {
     @Query("SELECT * FROM note WHERE category = :category")
     fun getNotesByCategory(category: String): Flow<List<Note>>
 
+    @Query("SELECT * FROM note WHERE isFavourite = :isFavourite")
+    fun getFavouriteNotes(isFavourite: String): Flow<List<Note>>
+
     @Query("SELECT * FROM note WHERE id = :id")
     suspend fun getNoteById(id: Int): Note?
 

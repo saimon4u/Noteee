@@ -7,11 +7,11 @@ import com.example.noteee.feature_note.domain.util.OrderType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GetNotes(
+class GetFavouriteNotes(
     private val noteRepository: NoteRepository
 ) {
-    suspend operator fun invoke(noteOrder: NoteOrder, category: String): Flow<List<Note>>{
-        return noteRepository.getNotes(category).map {notes->
+    suspend operator fun invoke(noteOrder: NoteOrder): Flow<List<Note>> {
+        return noteRepository.getFavouriteNotes("yes").map {notes->
             when(noteOrder.orderType){
                 OrderType.Ascending -> {
                     when(noteOrder){

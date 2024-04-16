@@ -15,8 +15,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material.icons.rounded.Settings
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -125,11 +125,14 @@ fun BottomNavBar(
                     .clip(CircleShape)
                     .background(Option_Color)
                     .padding(3.dp)
+                    .clickable {
+                        navHostController.navigate(Screen.FavouriteNotesScreen.route)
+                    }
                     .size(25.dp),
                 contentAlignment = Alignment.Center
             ){
                 Icon(
-                    imageVector = Icons.Rounded.Settings,
+                    imageVector = Icons.Rounded.Favorite,
                     contentDescription = null,
                     tint = Color.White,
                 )

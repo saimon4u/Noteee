@@ -22,7 +22,8 @@ data class Note(
     val timestamp: Long,
     val color: Int,
     val isProtected: Boolean = false,
-    val password: String = ""
+    val password: String = "",
+    val isFavourite: String = "no"
 ){
     companion object{
         val noteColors = listOf(Pastel_Green, Maximum_Green_Yellow, Persian_Pink, Green_Sheen, Celeste, Apricot, Pigment_Green, Poppy, Sunglow)

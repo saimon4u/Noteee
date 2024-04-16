@@ -16,6 +16,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.noteee.feature_note.presentation.edit_note.EditNoteScreen
+import com.example.noteee.feature_note.presentation.favourite_note.FavouriteNotesScreen
 import com.example.noteee.feature_note.presentation.notes.NoteScreen
 import com.example.noteee.feature_note.presentation.search_note.SearchScreen
 import com.example.noteee.feature_note.presentation.util.Screen
@@ -73,6 +74,12 @@ class MainActivity : ComponentActivity() {
                             route = Screen.SearchNoteScreen.route
                         ){
                             SearchScreen(bottomNavController)
+                        }
+
+                        composable(
+                            route = Screen.FavouriteNotesScreen.route
+                        ){
+                            FavouriteNotesScreen(bottomNavController)
                         }
                     }
                 }

@@ -48,6 +48,7 @@ class EditNoteViewModel @Inject constructor(
     ))
 
     val password = _password
+    var isFavourite: String = "no"
 
     private var currentNoteId: Int? = null
 
@@ -73,6 +74,8 @@ class EditNoteViewModel @Inject constructor(
                         _password.value = password.value.copy(
                             text = note.password
                         )
+
+                        isFavourite = note.isFavourite
                     }
                 }
             }
@@ -118,7 +121,8 @@ class EditNoteViewModel @Inject constructor(
                                 id = currentNoteId,
                                 category = selectedCategory.value,
                                 password = password.value.text,
-                                isProtected = password.value.text.isNotBlank()
+                                isProtected = password.value.text.isNotBlank(),
+                                isFavourite = isFavourite
                             )
                         )
 
