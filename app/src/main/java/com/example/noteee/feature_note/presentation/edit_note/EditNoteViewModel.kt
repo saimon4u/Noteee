@@ -42,6 +42,13 @@ class EditNoteViewModel @Inject constructor(
     private val _selectedCategory = mutableStateOf("General")
     val selectedCategory = _selectedCategory
 
+
+    private val _password = mutableStateOf(TextFieldState(
+        hint = "Enter Password"
+    ))
+
+    val password = _password
+
     private var currentNoteId: Int? = null
 
 
@@ -62,10 +69,15 @@ class EditNoteViewModel @Inject constructor(
                         )
 
                         _noteColor.intValue = note.color
+
+                        _password.value = password.value.copy(
+                            text = note.password
+                        )
                     }
                 }
             }
         }
+
     }
 
 
@@ -104,7 +116,9 @@ class EditNoteViewModel @Inject constructor(
                                 timestamp = System.currentTimeMillis(),
                                 color = noteColor.intValue,
                                 id = currentNoteId,
-                                category = _selectedCategory.value
+                                category = selectedCategory.value,
+                                password = password.value.text,
+                                isProtected = password.value.text.isNotBlank()
                             )
                         )
 
@@ -116,6 +130,12 @@ class EditNoteViewModel @Inject constructor(
 
             is EditNoteEvents.SelectCategory -> {
                 _selectedCategory.value = event.category
+            }
+
+            is EditNoteEvents.EnteredPassword ->{
+                _password.value = _password.value.copy(
+                    text = event.value
+                )
             }
         }
     }

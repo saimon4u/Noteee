@@ -2,6 +2,7 @@ package com.example.noteee.feature_note.presentation.edit_note
 
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.compose.animation.Animatable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,6 +40,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -79,10 +81,11 @@ fun EditNoteScreen(
     val viewModel = hiltViewModel<EditNoteViewModel>()
     val titleState = viewModel.noteTitle.value
     val contentState = viewModel.noteContent.value
+    val password = viewModel.password.value
 
     val animateBg = remember {
         Animatable(
-            Color(if (noteColor != -1) noteColor else viewModel.noteColor.value)
+            Color(if (noteColor != -1) noteColor else viewModel.noteColor.intValue)
         )
     }
 
@@ -91,6 +94,10 @@ fun EditNoteScreen(
         mutableStateOf(false)
     }
     var isCategoryOpen by remember {
+        mutableStateOf(false)
+    }
+
+    var isPasswordOpen by remember {
         mutableStateOf(false)
     }
     
@@ -311,55 +318,6 @@ fun EditNoteScreen(
                         )
                 ){
 
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(50.dp)
-//                            .padding(
-//                                horizontal = 5.dp,
-//                            )
-//                            .clip(RoundedCornerShape(10.dp))
-//                            .background(Option_Color),
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Row(
-//                            modifier = Modifier
-//                                .padding(
-//                                    start = 10.dp
-//                                )
-//                        ) {
-//                            Icon(imageVector = Icons.Rounded.Category, contentDescription = "Note Category", tint = Color.White)
-//                            Spacer(modifier = Modifier.width(5.dp))
-//                            Text(
-//                                text = "Note Category",
-//                                color = Color.White,
-//                                fontSize = 17.sp,
-//                                fontWeight = FontWeight.SemiBold
-//                            )
-//                        }
-//
-//                        Row(
-//                            modifier = Modifier
-//                                .padding(
-//                                    end = 10.dp
-//                                )
-//                        ) {
-//
-//                            Text(
-//                                text = "General",
-//                                color = Color.LightGray,
-//                                fontSize = 10.sp,
-//                                fontWeight = FontWeight.SemiBold
-//                            )
-//
-//                            Spacer(modifier = Modifier.width(5.dp))
-//                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
-//                                .size(20.dp)
-//                                .padding(top = 5.dp))
-//                        }
-//                    }
-
                     EditNoteOption(
                         icon = Icons.Rounded.Category,
                         title = "Note Category",
@@ -406,111 +364,39 @@ fun EditNoteScreen(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(50.dp)
-//                            .padding(
-//                                horizontal = 5.dp,
-//                            )
-//                            .clip(RoundedCornerShape(10.dp))
-//                            .background(Option_Color),
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Row(
-//                            modifier = Modifier
-//                                .padding(
-//                                    start = 10.dp
-//                                )
-//                        ) {
-//                            Icon(imageVector = Icons.Rounded.Lock, contentDescription = "Note Password", tint = Color.White)
-//                            Spacer(modifier = Modifier.width(5.dp))
-//                            Text(
-//                                text = "Set Password",
-//                                color = Color.White,
-//                                fontSize = 17.sp,
-//                                fontWeight = FontWeight.SemiBold
-//                            )
-//                        }
-//
-//                        Row(
-//                            modifier = Modifier
-//                                .padding(
-//                                    end = 10.dp
-//                                )
-//                        ) {
-//
-//                            Text(
-//                                text = "Not Set",
-//                                color = Color.LightGray,
-//                                fontSize = 10.sp,
-//                                fontWeight = FontWeight.SemiBold
-//                            )
-//
-//                            Spacer(modifier = Modifier.width(5.dp))
-//                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
-//                                .size(20.dp)
-//                                .padding(top = 5.dp))
-//                        }
-//                    }
                     
                     EditNoteOption(
                         icon = Icons.Rounded.Password,
                         title = "Set Password",
-                        value = "Not Set"
+                        value = if(password.text.isBlank()) "Not Set" else "Protected",
+                        modifier = Modifier
+                            .clickable {
+                                isPasswordOpen = !isPasswordOpen
+                            }
                     )
 
-                    Spacer(modifier = Modifier.height(20.dp))
+                    if(isPasswordOpen){
+                        Spacer(modifier = Modifier.height(10.dp))
 
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(50.dp)
-//                            .padding(
-//                                horizontal = 5.dp,
-//                            )
-//                            .clip(RoundedCornerShape(10.dp))
-//                            .background(Option_Color),
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Row(
-//                            modifier = Modifier
-//                                .padding(
-//                                    start = 10.dp
-//                                )
-//                        ) {
-//                            Icon(imageVector = Icons.Rounded.AlarmAdd, contentDescription = "Note Alarm", tint = Color.White)
-//                            Spacer(modifier = Modifier.width(5.dp))
-//                            Text(
-//                                text = "Set Reminder",
-//                                color = Color.White,
-//                                fontSize = 17.sp,
-//                                fontWeight = FontWeight.SemiBold
-//                            )
-//                        }
-//
-//                        Row(
-//                            modifier = Modifier
-//                                .padding(
-//                                    end = 10.dp
-//                                )
-//                        ) {
-//
-//                            Text(
-//                                text = "Not Set",
-//                                color = Color.LightGray,
-//                                fontSize = 10.sp,
-//                                fontWeight = FontWeight.SemiBold
-//                            )
-//
-//                            Spacer(modifier = Modifier.width(5.dp))
-//                            Icon(imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos, contentDescription = "Open Category", modifier = Modifier
-//                                .size(20.dp)
-//                                .padding(top = 5.dp))
-//                        }
-//                    }
+                        TextField(
+                            value = password.text,
+                            onValueChange = {
+                                viewModel.onEvent(EditNoteEvents.EnteredPassword(it))
+                            },
+                            placeholder = {
+                                Text(text = password.hint)
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    horizontal = 10.dp
+                                )
+                                .clip(RoundedCornerShape(20))
+                        )
+
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     EditNoteOption(
                         icon = Icons.Rounded.AlarmAdd,
@@ -563,7 +449,14 @@ fun EditNoteScreen(
                             .height(50.dp)
                             .width(150.dp)
                             .clip(RoundedCornerShape(15.dp))
-                            .background(Color.Red),
+                            .clickable {
+                                val intent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://github.com/saimon4u/Noteee")
+                                )
+                                context.startActivity(intent)
+                            }
+                            .background(Color.Green),
                         contentAlignment = Alignment.Center
                     ) {
                         Row(
@@ -572,8 +465,8 @@ fun EditNoteScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceEvenly
                         ) {
-                            Icon(imageVector = Icons.Outlined.Delete, contentDescription = null, tint = Color.Black)
-                            Text(text = "Delete", color = Color.Black)
+                            Icon(imageVector = Icons.Outlined.Info, contentDescription = null, tint = Color.Black)
+                            Text(text = "Credits", color = Color.Black)
                         }
                     }
 

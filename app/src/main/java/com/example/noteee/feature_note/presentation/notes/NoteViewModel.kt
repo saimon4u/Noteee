@@ -39,7 +39,6 @@ class NoteViewModel @Inject constructor(
                 }
             }
         }
-        Log.e("TAG", "getNotes: " + _noteStates.value.noteList.size.toString() )
     }
 
 

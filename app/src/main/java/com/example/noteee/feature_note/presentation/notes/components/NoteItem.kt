@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,12 +24,19 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.DeleteOutline
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.ArrowOutward
+import androidx.compose.material.icons.rounded.Lock
+import androidx.compose.material.icons.rounded.LockOpen
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -73,6 +81,33 @@ fun NoteItem(
     val formattedDateTime = format.format(date)
     val cutout = with(LocalDensity.current){cutCornerSize.toPx()}
 
+    var isFromDelete by remember {
+        mutableStateOf(false)
+    }
+
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+
+
+    if(showDialog){
+        Box(
+            modifier = Modifier
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ){
+            PasswordDialogBox(
+                onEvent = onEvent!!,
+                onDismiss = {
+                    showDialog = false
+                },
+                isFromDelete = isFromDelete,
+                context = LocalContext.current,
+                note = note,
+                navHostController = navHostController
+            )
+        }
+    }
 
     Box (
         modifier = modifier
@@ -108,7 +143,6 @@ fun NoteItem(
                 clipPath(clipPath) {
                     drawRoundRect(
                         color = Color(note.color).copy(.5f),
-//                        color = Persian_Pink,
                         size = size,
                         cornerRadius = CornerRadius(40f, 40f)
                     )
@@ -126,7 +160,7 @@ fun NoteItem(
         ){
 
             Text(
-                text = note.category ?: "",
+                text = note.category,
                 color = Color.Black,
                 fontSize = 12.sp,
                 maxLines = 1,
@@ -208,7 +242,9 @@ fun NoteItem(
                     .size(cutCornerSize)
                     .clip(CircleShape)
                     .clickable {
-                        navHostController.navigate(Screen.EditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}" )
+                        isFromDelete = false
+                        if (note.isProtected) showDialog = true
+                        else navHostController.navigate(Screen.EditNoteScreen.route + "?noteId=${note.id}&noteColor=${note.color}")
                     }
                     .background(Color(note.color)),
                 contentAlignment = Alignment.Center
@@ -221,14 +257,32 @@ fun NoteItem(
             }
         }
 
-        Box(
+        Column(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(
                     top = 10.dp,
                     end = 10.dp
-                )
+                ),
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
+            Box(
+                modifier = Modifier
+                    .size(30.dp)
+                    .clip(CircleShape)
+                    .background(Color.White.copy(.9f))
+                    .padding(7.dp),
+                contentAlignment = Alignment.Center
+            ){
+                Icon(
+                    imageVector = if(note.isProtected) Icons.Rounded.Lock else Icons.Rounded.LockOpen,
+                    contentDescription = "Protected",
+                    tint = Color.Black
+                )
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
             Box(
                 modifier = Modifier
                     .size(30.dp)
@@ -243,16 +297,9 @@ fun NoteItem(
                     tint = Color.Black
                 )
             }
-        }
 
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(
-                    bottom = 20.dp,
-                    end = 10.dp
-                )
-        ) {
+            Spacer(modifier = Modifier.height(10.dp))
+
             Box(
                 modifier = Modifier
                     .size(30.dp)
@@ -260,7 +307,9 @@ fun NoteItem(
                     .background(Color.White.copy(.9f))
                     .clickable {
                         if (onEvent != null) {
-                            onEvent(NoteEvents.Delete(note))
+                            isFromDelete = true
+                            if (note.isProtected) showDialog = true
+                            else onEvent(NoteEvents.Delete(note))
                         }
                     }
                     .padding(7.dp),
