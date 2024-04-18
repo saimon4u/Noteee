@@ -112,7 +112,7 @@ class EditNoteViewModel @Inject constructor(
             is EditNoteEvents.SaveNote -> {
                 viewModelScope.launch {
                     try {
-                        noteUseCases.addNote(
+                        noteUseCases.addNote.invoke(
                             Note(
                                 title = noteTitle.value.text,
                                 content = noteContent.value.text,

@@ -71,13 +71,13 @@ fun NoteScreenContent(
                             vertical = 5.dp
                         )
                 ){
-                    items(noteStates.categoryList){category->
+                    items(noteViewModel.categoryList){category->
                         Box(
                             modifier = Modifier
                                 .wrapContentSize()
                                 .padding(8.dp)
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(if (noteStates.selectedCategory == category) Color.Black else Option_Color_Light)
+                                .background(if (noteViewModel.selectedCategory.value == category) Color.Black else Option_Color_Light)
                                 .clickable {
                                     noteViewModel.onEvent(NoteEvents.Categorize(category))
                                 }
@@ -88,7 +88,7 @@ fun NoteScreenContent(
                             Text(
                                 text = category,
                                 fontSize = 12.sp,
-                                color = if(noteStates.selectedCategory == category) Color.White else Color.Black
+                                color = if(noteViewModel.selectedCategory.value == category) Color.White else Color.Black
                             )
                         }
 
